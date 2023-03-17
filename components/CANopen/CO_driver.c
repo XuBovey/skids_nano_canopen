@@ -29,32 +29,31 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "driver/gpio.h"
-#include "sdkconfig.h"
-#include "esp_err.h"
-#include "esp_log.h"
 #include <stdlib.h>
 #include <stdint.h>
-#include "driver/can.h"
-#include "esp_timer.h"
+#include <unistd.h>
+
+//-------------------------------
+// ESP32
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "sdkconfig.h"
 #include "soc/soc.h"
+#include "driver/can.h"
+#include "driver/gpio.h"
+
+#include "esp_timer.h"
+#include "esp_err.h"
+#include "esp_log.h"
+
+//-------------------------------
+// canopennode
 #include "CANopen.h"
 #include "CO_OD.h"
 #include "CO_config.h"
-#include "modul_config.h"
 #include "CO_driver.h"
 #include "CO_Emergency.h"
-#include "CO_config.h"
-#include "stdio.h"
-#include <stdlib.h>
-#include <stdint.h>
-#include "esp_err.h"
-#include "esp_log.h"
-#include "driver/gpio.h"
-#include "driver/can.h"
+#include "modul_config.h"
 
 CO_CANmodule_t *CANmodulePointer = NULL;
 

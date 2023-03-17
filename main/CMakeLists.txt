@@ -1,2 +1,2 @@
-idf_component_register(SRCS "node_one.c"
+idf_component_register(SRCS "usr_app_main.c"
                     INCLUDE_DIRS ".")
