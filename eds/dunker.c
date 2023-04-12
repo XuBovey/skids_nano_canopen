@@ -16,7 +16,7 @@ static uint8_t _tpdoNum = 0x00;
  * @brief Array for all Motors and the corresponding object-dictionary entries
  *
  */
-static motorRegister motor[] =
+static motorRegister dunker_mapRPDO[] =
 {{&OD_motor_0_device_command, &OD_motor_0_error_register, &OD_motor_0_status_register, &OD_motor_0_mode_of_operation, &OD_motor_0_power_enable, &OD_motor_0_velocity_target_value},
  {&OD_motor_1_device_command, &OD_motor_1_error_register, &OD_motor_1_status_register, &OD_motor_1_mode_of_operation, &OD_motor_1_power_enable, &OD_motor_1_velocity_target_value}};
 

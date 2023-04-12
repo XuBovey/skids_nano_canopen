@@ -16,16 +16,17 @@
 
 //####  MAIN CONFIG  ####
 #define BOOT_WAIT 2000
-#define MAIN_WAIT 100 /** Time in ms between every main loop cycle */
+#define MAIN_WAIT 500 /** Time in ms between every main loop cycle */
 
 //----------------------------------
 //#### CANOPEN CONFIG ####
-#define CAN_BITRATE 1000    /** 1Mbit*/
+#define CAN_BITRATE 500    /** baudrate 125kbit*/
 #define NODE_ID_SELF 0x42   /** ESP32 Modul ID*/
 #define NODE_ID_MOTOR0 0x1A /** Dunker Motor ID*/
 #define NODE_ID_MOTOR1 0x1B /** Dunker Motor ID*/
-#define NODE_ID_GYRO 0x04   /** Dunker Motor ID*/
-#define NODE_ID_HATOX 0x03  /** Dunker Motor ID*/
+#define NODE_ID_GYRO 0x14   /** Dunker Motor ID*/
+#define NODE_ID_HATOX 0x13  /** Dunker Motor ID*/
+#define NODE_ID_PMC0 0x05 /** Dunker Motor ID*/
 //----------------------------------
 
 //#####################################################################

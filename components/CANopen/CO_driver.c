@@ -398,7 +398,17 @@ CO_ReturnError_t CO_CANsend(CO_CANmodule_t *CANmodule, CO_CANtx_t *buffer)
         /* Transmit esp can message.  */
         if (can_transmit(&temp_can_message, pdMS_TO_TICKS(CAN_TICKS_TO_WAIT)) == ESP_OK)
         {
-            ESP_LOGI("CANsend", "ID: %d , Data %d,%d,%d,%d,%d,%d", temp_can_message.identifier, temp_can_message.data[0], temp_can_message.data[1], temp_can_message.data[2], temp_can_message.data[3], temp_can_message.data[4], temp_can_message.data[5]);
+            ESP_LOGI("CANsend", "ID: %X , [%d] Data %x,%x,%x,%x,%x,%x,%x,%x", 
+                    temp_can_message.identifier, 
+                    temp_can_message.data_length_code, 
+                    temp_can_message.data[0], 
+                    temp_can_message.data[1], 
+                    temp_can_message.data[2], 
+                    temp_can_message.data[3], 
+                    temp_can_message.data[4], 
+                    temp_can_message.data[5],
+                    temp_can_message.data[6],
+                    temp_can_message.data[7]);
         }
         else
         {
@@ -568,6 +578,7 @@ void CO_CANinterrupt(void *args)
         for (uint8_t i = 0; i < temp_can_message.data_length_code; i++)
         {
             rcvMsg.data[i] = temp_can_message.data[i]; /* copy data from esp can message to library message */
+            // ESP_LOGE("CO", "rx:%x", rcvMsg.data[i]);
         }
 
         rcvMsgIdent = rcvMsg.ident;
