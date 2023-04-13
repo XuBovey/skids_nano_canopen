@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := can_network_master
+PROJECT_NAME := esp32_skids_nano_canopennode
 
 include $(IDF_PATH)/make/project.mk
 

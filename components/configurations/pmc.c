@@ -12,12 +12,20 @@ static CO_t *_CO = NULL;
 static uint8_t _nodeId = 0x00;
 static uint8_t _tpdoNum = 0x00;
 
+uint8_t OD_pusi_moto_Status;
+uint8_t OD_pusi_moto_driver_status;
+uint8_t OD_pusi_moto_mode;
+uint8_t OD_pusi_moto_stop;
+// uint8_t *power;
+int32_t OD_pusi_moto_speed;
+int32_t OD_pusi_moto_postion;
+
 /**
  * @brief Array for all Motors and the corresponding object-dictionary entries
  *
  */
 static motorRegister motor[] =
-{{	&OD_pusi_moto_err_status, 
+{{	&OD_pusi_moto_Status, 
 	&OD_pusi_moto_driver_status, 
 	&OD_pusi_moto_mode, 
 	&OD_pusi_moto_stop, 
@@ -259,7 +267,7 @@ int8_t pmc_mapTPDO(uint8_t pdoNumber, uint8_t nodeId, uint32_t *mappedObjects, u
 
 void pmc_move_steps(uint32_t steps)
 {
-	int8_t ret = 0;
+	int8_t ret;
 	// move to
 	ESP_LOGI("pmc", "move %d steps.", steps);
 	CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x6004, 0, (uint8_t *)&steps, sizeof(steps), 0);

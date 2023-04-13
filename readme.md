@@ -29,3 +29,26 @@
 * 其中CO_TPDO_process和其中CO_RPDO_process会由coMainTask中的CO_process_TPDO/CO_process_RPDO函数调用，也会由CO_CANinterrupt的回调函数调用。
 
 
+## CO_OD
+```
+  #define CO_NO_SYNC                     1   //Associated objects: 1005-1007
+  #define CO_NO_EMERGENCY                1   //Associated objects: 1014, 1015
+  #define CO_NO_TIME                     0   //Associated objects: 1012, 1013
+  #define CO_NO_SDO_SERVER               2   //Associated objects: 1200-127F
+  #define CO_NO_SDO_CLIENT               1   //Associated objects: 1280-12FF
+  #define CO_NO_LSS_SERVER               0   //LSS Slave
+  #define CO_NO_LSS_CLIENT               0   //LSS Master
+  #define CO_NO_RPDO                     4   //Associated objects: 14xx, 16xx
+  #define CO_NO_TPDO                     4   //Associated objects: 18xx, 1Axx
+  #define CO_NO_NMT_MASTER               1   //0x1F80 = 1
+  #define CO_NO_TRACE                    0
+```
+
+## 如何控制一个电机
+
+
+## 如何同时控制两个电机
+
+## 注意事项
+* 0x1400~0x1403 0x1600~x01603 0x1800~0x1803 0x1a00~0x1a03 这几个字典命名需字段内完全一致，否则会出错
+* 0x1400~0x1403 0x1600~x01603 0x1800~0x1803 0x1a00~0x1a03 字典内各字段需要与CO_PDO.h中定义的字段完全一致，因为CO_new函数中会做字段匹配
