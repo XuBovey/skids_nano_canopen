@@ -15,8 +15,9 @@
 #include "CO_OD.h"
 #include "CO_config.h"
 #include "modul_config.h"
-#include "dunker.h"
-#include "Gyro.h"
+#include "pmc.h"
+// #include "dunker.h"
+// #include "Gyro.h"
 
 uint8_t counter = 0;
 
@@ -54,23 +55,33 @@ void mainTask(void *pvParameter)
 				ESP_ERROR_CHECK(esp_timer_start_periodic(periodicTimer, CO_MAIN_TASK_INTERVAL));
 
 				/* start CAN */
+				ESP_LOGI("mainTask", "start can.");
 				CO_CANsetNormalMode(CO->CANmodule[0]);
 
 				reset = CO_RESET_NOT;
 				coInterruptCounterPrevious = coInterruptCounter;
 
 				/*Set Operating Mode of Slaves to Operational*/
-				CO_sendNMTcommand(CO, 0x01, NODE_ID_MOTOR0);
+				// CO_sendNMTcommand(CO, 0x01, NODE_ID_MOTOR0);
 				//CO_sendNMTcommand(CO, 0x01, NODE_ID_MOTOR1);
 				//CO_sendNMTcommand(CO, 0x01, NODE_ID_GYRO);
 				//CO_sendNMTcommand(CO, 0x01, NODE_ID_HATOX);
+				vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+				ESP_LOGI("mainTask", "send nmt command.");
+				CO_sendNMTcommand(CO, 0x01, NODE_ID_PMC0);
 
 				/* Initialise system components */
-				dunker_init(CO, NODE_ID_MOTOR0, 2);
+				// pmc_init(CO, NODE_ID_MOTOR0, 2);
 				// gyro_init(CO);
+				ESP_LOGI("mainTask", "motor init done.");
+				pmc_init(CO, NODE_ID_PMC0, 0);
+				
 
 				/* application init code goes here. */
 				//rosserialSetup();
+				
+				ESP_LOGI("mainTask", "loop.");
+				// pmc_test();
 
 				while (reset == CO_RESET_NOT)
 				{
@@ -84,36 +95,42 @@ void mainTask(void *pvParameter)
 						/* CANopen process */
 						reset = CO_process(CO, coInterruptCounterDiff, NULL);
 
+						if(coInterruptCounter >= 6000)
+						{
+							// pmc_move_steps(1000);
+							pmc_motor_test();
+						}
+#if 0
 						/* Nonblocking application code may go here. */
 						if (counter == 0)
 						{
-								dunker_setEnable(1);
-								dunker_setSpeed(1000);
+								pmc_setEnable(1);
+								pmc_setSpeed(1000);
 								counter++;
 						}
 						if (coInterruptCounter > 4000 && counter == 1)
 						{
-								dunker_setSpeed(3000);
+								pmc_setSpeed(3000);
 								counter++;
 						}
 						if (coInterruptCounter > 8000 && counter == 2)
 						{
-								dunker_quickStop();
+								pmc_quickStop();
 								counter++;
 						}
 						if (coInterruptCounter > 12000 && counter == 3)
 						{
-								dunker_continueMovement();
-								dunker_setSpeed(1000);
+								pmc_continueMovement();
+								pmc_setSpeed(1000);
 								counter++;
 						}
 						if (coInterruptCounter > 16000 && counter == 4)
 						{
-								dunker_halt();
-								dunker_setEnable(0);
+								pmc_halt();
+								pmc_setEnable(0);
 								counter++;
 						}
-
+#endif
 						/* Wait */
 						vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
 				}
