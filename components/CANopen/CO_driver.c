@@ -398,7 +398,7 @@ CO_ReturnError_t CO_CANsend(CO_CANmodule_t *CANmodule, CO_CANtx_t *buffer)
         /* Transmit esp can message.  */
         if (can_transmit(&temp_can_message, pdMS_TO_TICKS(CAN_TICKS_TO_WAIT)) == ESP_OK)
         {
-            ESP_LOGI("CANsend", "ID: %X , [%d] Data %x,%x,%x,%x,%x,%x,%x,%x", 
+            ESP_LOGD("CANsend", "ID: %X , [%d] Data %x,%x,%x,%x,%x,%x,%x,%x", 
                     temp_can_message.identifier, 
                     temp_can_message.data_length_code, 
                     temp_can_message.data[0], 

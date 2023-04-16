@@ -98,7 +98,7 @@ void mainTask(void *pvParameter)
 						if(coInterruptCounter >= 6000)
 						{
 							// pmc_move_steps(1000);
-							pmc_motor_test();
+							pmc_sdoMotorTest();
 						}
 #if 0
 						/* Nonblocking application code may go here. */
