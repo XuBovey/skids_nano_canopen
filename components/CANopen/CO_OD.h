@@ -48,7 +48,7 @@
 
 /*******************************************************************************
    DEVICE INFO:
-      VendorName:     ESP32
+      VendorName:     XUBH
       VendorNumber:   0x00002
       ProductName:    ESP32_MOTOR_CTRL
       ProductNumber:  0x00001
@@ -118,15 +118,15 @@
                UNSIGNED8      transmissionType;
                }              OD_RPDOCommunicationParameter_t;
 /*1600      */ typedef struct {
-               UNSIGNED8      numberOfEntries;
-               UNSIGNED32     receivePDO1Mapping1th;
-               UNSIGNED32     receivePDO1Mapping2th;
-               UNSIGNED32     receivePDO1Mapping3th;
-               UNSIGNED32     receivePDO1Mapping4th;
-               UNSIGNED32     receivePDO1Mapping5th;
-               UNSIGNED32     receivePDO1Mapping6th;
-               UNSIGNED32     receivePDO1Mapping7th;
-               UNSIGNED32     receivePDO1Mapping8th;
+               UNSIGNED8      numberOfMappedObjects;
+               UNSIGNED32     mappedObject1;
+               UNSIGNED32     mappedObject2;
+               UNSIGNED32     mappedObject3;
+               UNSIGNED32     mappedObject4;
+               UNSIGNED32     mappedObject5;
+               UNSIGNED32     mappedObject6;
+               UNSIGNED32     mappedObject7;
+               UNSIGNED32     mappedObject8;
                }              OD_RPDOMappingParameter_t;
 /*1800      */ typedef struct {
                UNSIGNED8      maxSubIndex;
@@ -138,15 +138,15 @@
                UNSIGNED8      SYNCStartValue;
                }              OD_TPDOCommunicationParameter_t;
 /*1A00      */ typedef struct {
-               UNSIGNED8      numberOfEntries;
-               UNSIGNED32     transmitPDO1Mapping1th;
-               UNSIGNED32     transmitPDO1Mapping2th;
-               UNSIGNED32     transmitPDO1Mapping3th;
-               UNSIGNED32     transmitPDO1Mapping4th;
-               UNSIGNED32     transmitPDO1Mapping5th;
-               UNSIGNED32     transmitPDO1Mapping6th;
-               UNSIGNED32     transmitPDO1Mapping7th;
-               UNSIGNED32     transmitPDO1Mapping8th;
+               UNSIGNED8      numberOfMappedObjects;
+               UNSIGNED32     mappedObject1;
+               UNSIGNED32     mappedObject2;
+               UNSIGNED32     mappedObject3;
+               UNSIGNED32     mappedObject4;
+               UNSIGNED32     mappedObject5;
+               UNSIGNED32     mappedObject6;
+               UNSIGNED32     mappedObject7;
+               UNSIGNED32     mappedObject8;
                }              OD_TPDOMappingParameter_t;
 /*600F      */ typedef struct {
                UNSIGNED8      numberOfEntries;
@@ -361,53 +361,31 @@
         #define OD_1600_RPDOMappingParameter                        0x1600
 
         #define OD_1600_0_RPDOMappingParameter_maxSubIndex          0
-        #define OD_1600_1_RPDOMappingParameter_receivePDO1Mapping1th 1
-        #define OD_1600_2_RPDOMappingParameter_receivePDO1Mapping2th 2
-        #define OD_1600_3_RPDOMappingParameter_receivePDO1Mapping3th 3
-        #define OD_1600_4_RPDOMappingParameter_receivePDO1Mapping4th 4
-        #define OD_1600_5_RPDOMappingParameter_receivePDO1Mapping5th 5
-        #define OD_1600_6_RPDOMappingParameter_receivePDO1Mapping6th 6
-        #define OD_1600_7_RPDOMappingParameter_receivePDO1Mapping7th 7
-        #define OD_1600_8_RPDOMappingParameter_receivePDO1Mapping8th 8
+        #define OD_1600_1_RPDOMappingParameter_mappedObject1        1
+        #define OD_1600_2_RPDOMappingParameter_mappedObject2        2
+        #define OD_1600_3_RPDOMappingParameter_mappedObject3        3
+        #define OD_1600_4_RPDOMappingParameter_mappedObject4        4
+        #define OD_1600_5_RPDOMappingParameter_mappedObject5        5
+        #define OD_1600_6_RPDOMappingParameter_mappedObject6        6
+        #define OD_1600_7_RPDOMappingParameter_mappedObject7        7
+        #define OD_1600_8_RPDOMappingParameter_mappedObject8        8
 
 /*1601 */
         #define OD_1601_RPDOMappingParameter                        0x1601
 
         #define OD_1601_0_RPDOMappingParameter_maxSubIndex          0
-        #define OD_1601_1_RPDOMappingParameter_receivePDO1Mapping1th 1
-        #define OD_1601_2_RPDOMappingParameter_receivePDO1Mapping2th 2
-        #define OD_1601_3_RPDOMappingParameter_receivePDO1Mapping3th 3
-        #define OD_1601_4_RPDOMappingParameter_receivePDO1Mapping4th 4
-        #define OD_1601_5_RPDOMappingParameter_receivePDO1Mapping5th 5
-        #define OD_1601_6_RPDOMappingParameter_receivePDO1Mapping6th 6
-        #define OD_1601_7_RPDOMappingParameter_receivePDO1Mapping7th 7
-        #define OD_1601_8_RPDOMappingParameter_receivePDO1Mapping8th 8
+        #define OD_1601_1_RPDOMappingParameter_mappedObject1        1
+        #define OD_1601_2_RPDOMappingParameter_mappedObject2        2
 
 /*1602 */
         #define OD_1602_RPDOMappingParameter                        0x1602
 
         #define OD_1602_0_RPDOMappingParameter_maxSubIndex          0
-        #define OD_1602_1_RPDOMappingParameter_receivePDO1Mapping1th 1
-        #define OD_1602_2_RPDOMappingParameter_receivePDO1Mapping2th 2
-        #define OD_1602_3_RPDOMappingParameter_receivePDO1Mapping3th 3
-        #define OD_1602_4_RPDOMappingParameter_receivePDO1Mapping4th 4
-        #define OD_1602_5_RPDOMappingParameter_receivePDO1Mapping5th 5
-        #define OD_1602_6_RPDOMappingParameter_receivePDO1Mapping6th 6
-        #define OD_1602_7_RPDOMappingParameter_receivePDO1Mapping7th 7
-        #define OD_1602_8_RPDOMappingParameter_receivePDO1Mapping8th 8
 
 /*1603 */
         #define OD_1603_RPDOMappingParameter                        0x1603
 
         #define OD_1603_0_RPDOMappingParameter_maxSubIndex          0
-        #define OD_1603_1_RPDOMappingParameter_receivePDO1Mapping1th 1
-        #define OD_1603_2_RPDOMappingParameter_receivePDO1Mapping2th 2
-        #define OD_1603_3_RPDOMappingParameter_receivePDO1Mapping3th 3
-        #define OD_1603_4_RPDOMappingParameter_receivePDO1Mapping4th 4
-        #define OD_1603_5_RPDOMappingParameter_receivePDO1Mapping5th 5
-        #define OD_1603_6_RPDOMappingParameter_receivePDO1Mapping6th 6
-        #define OD_1603_7_RPDOMappingParameter_receivePDO1Mapping7th 7
-        #define OD_1603_8_RPDOMappingParameter_receivePDO1Mapping8th 8
 
 /*1800 */
         #define OD_1800_TPDOCommunicationParameter                  0x1800
@@ -457,53 +435,31 @@
         #define OD_1A00_TPDOMappingParameter                        0x1A00
 
         #define OD_1A00_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1A00_1_TPDOMappingParameter_transmitPDO1Mapping1th 1
-        #define OD_1A00_2_TPDOMappingParameter_transmitPDO1Mapping2th 2
-        #define OD_1A00_3_TPDOMappingParameter_transmitPDO1Mapping3th 3
-        #define OD_1A00_4_TPDOMappingParameter_transmitPDO1Mapping4th 4
-        #define OD_1A00_5_TPDOMappingParameter_transmitPDO1Mapping5th 5
-        #define OD_1A00_6_TPDOMappingParameter_transmitPDO1Mapping6th 6
-        #define OD_1A00_7_TPDOMappingParameter_transmitPDO1Mapping7th 7
-        #define OD_1A00_8_TPDOMappingParameter_transmitPDO1Mapping8th 8
+        #define OD_1A00_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A00_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A00_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A00_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A00_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A00_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A00_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A00_8_TPDOMappingParameter_mappedObject8        8
 
 /*1A01 */
         #define OD_1A01_TPDOMappingParameter                        0x1A01
 
         #define OD_1A01_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1A01_1_TPDOMappingParameter_transmitPDO1Mapping1th 1
-        #define OD_1A01_2_TPDOMappingParameter_transmitPDO1Mapping2th 2
-        #define OD_1A01_3_TPDOMappingParameter_transmitPDO1Mapping3th 3
-        #define OD_1A01_4_TPDOMappingParameter_transmitPDO1Mapping4th 4
-        #define OD_1A01_5_TPDOMappingParameter_transmitPDO1Mapping5th 5
-        #define OD_1A01_6_TPDOMappingParameter_transmitPDO1Mapping6th 6
-        #define OD_1A01_7_TPDOMappingParameter_transmitPDO1Mapping7th 7
-        #define OD_1A01_8_TPDOMappingParameter_transmitPDO1Mapping8th 8
+        #define OD_1A01_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A01_2_TPDOMappingParameter_mappedObject2        2
 
 /*1A02 */
         #define OD_1A02_TPDOMappingParameter                        0x1A02
 
         #define OD_1A02_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1A02_1_TPDOMappingParameter_transmitPDO1Mapping1th 1
-        #define OD_1A02_2_TPDOMappingParameter_transmitPDO1Mapping2th 2
-        #define OD_1A02_3_TPDOMappingParameter_transmitPDO1Mapping3th 3
-        #define OD_1A02_4_TPDOMappingParameter_transmitPDO1Mapping4th 4
-        #define OD_1A02_5_TPDOMappingParameter_transmitPDO1Mapping5th 5
-        #define OD_1A02_6_TPDOMappingParameter_transmitPDO1Mapping6th 6
-        #define OD_1A02_7_TPDOMappingParameter_transmitPDO1Mapping7th 7
-        #define OD_1A02_8_TPDOMappingParameter_transmitPDO1Mapping8th 8
 
 /*1A03 */
         #define OD_1A03_TPDOMappingParameter                        0x1A03
 
         #define OD_1A03_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1A03_1_TPDOMappingParameter_transmitPDO1Mapping1th 1
-        #define OD_1A03_2_TPDOMappingParameter_transmitPDO1Mapping2th 2
-        #define OD_1A03_3_TPDOMappingParameter_transmitPDO1Mapping3th 3
-        #define OD_1A03_4_TPDOMappingParameter_transmitPDO1Mapping4th 4
-        #define OD_1A03_5_TPDOMappingParameter_transmitPDO1Mapping5th 5
-        #define OD_1A03_6_TPDOMappingParameter_transmitPDO1Mapping6th 6
-        #define OD_1A03_7_TPDOMappingParameter_transmitPDO1Mapping7th 7
-        #define OD_1A03_8_TPDOMappingParameter_transmitPDO1Mapping8th 8
 
 /*1F80 */
         #define OD_1F80_NMTStartup                                  0x1F80
@@ -554,10 +510,10 @@
         #define OD_600C_motorPosition                               0x600C
 
 /*600D */
-        #define OD_600D_currentDecay                                0x600D
+        #define OD_600D_motorEnableRx                               0x600D
 
 /*600E */
-        #define OD_600E_motorEnable                                 0x600E
+        #define OD_600E_motorEnableTx                               0x600E
 
 /*600F */
         #define OD_600F_EXTStopParameter                            0x600F
@@ -703,6 +659,7 @@ struct sCO_OD_RAM{
 /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[4];
 /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[4];
 /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[4];
+/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
 /*1F80      */ UNSIGNED32     NMTStartup;
 /*1F89      */ UNSIGNED32     bootTime;
 /*2100      */ OCTET_STRING   errorStatusBits[11];
@@ -719,8 +676,8 @@ struct sCO_OD_RAM{
 /*600A      */ UNSIGNED16     microStep;
 /*600B      */ UNSIGNED16     peakCurrent;
 /*600C      */ INTEGER32      motorPosition;
-/*600D      */ UNSIGNED8      currentDecay;
-/*600E      */ UNSIGNED8      motorEnable;
+/*600D      */ UNSIGNED8      motorEnableRx;
+/*600E      */ UNSIGNED8      motorEnableTx;
 /*600F      */ OD_EXTStopParameter_t EXTStopParameter;
 /*6011      */ OD_GPIOParameter_t GPIOParameter;
 /*6012      */ UNSIGNED16     GPIOValue;
@@ -753,7 +710,6 @@ struct sCO_OD_RAM{
 struct sCO_OD_ROM{
                UNSIGNED32     FirstWord;
 
-/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
 
                UNSIGNED32     LastWord;
 };
@@ -882,7 +838,7 @@ extern struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM;
         #define OD_TPDOCommunicationParameter                       CO_OD_RAM.TPDOCommunicationParameter
 
 /*1A00, Data Type: TPDOMappingParameter_t */
-        #define OD_TPDOMappingParameter                             CO_OD_ROM.TPDOMappingParameter
+        #define OD_TPDOMappingParameter                             CO_OD_RAM.TPDOMappingParameter
 
 /*1F80, Data Type: UNSIGNED32 */
         #define OD_NMTStartup                                       CO_OD_RAM.NMTStartup
@@ -934,10 +890,10 @@ extern struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM;
         #define OD_motorPosition                                    CO_OD_RAM.motorPosition
 
 /*600D, Data Type: UNSIGNED8 */
-        #define OD_currentDecay                                     CO_OD_RAM.currentDecay
+        #define OD_motorEnableRx                                    CO_OD_RAM.motorEnableRx
 
 /*600E, Data Type: UNSIGNED8 */
-        #define OD_motorEnable                                      CO_OD_RAM.motorEnable
+        #define OD_motorEnableTx                                    CO_OD_RAM.motorEnableTx
 
 /*600F, Data Type: EXTStopParameter_t */
         #define OD_EXTStopParameter                                 CO_OD_RAM.EXTStopParameter
