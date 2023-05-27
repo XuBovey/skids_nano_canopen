@@ -398,17 +398,25 @@ CO_ReturnError_t CO_CANsend(CO_CANmodule_t *CANmodule, CO_CANtx_t *buffer)
         /* Transmit esp can message.  */
         if (can_transmit(&temp_can_message, pdMS_TO_TICKS(CAN_TICKS_TO_WAIT)) == ESP_OK)
         {
-            ESP_LOGD("CANsend", "ID: %X , [%d] Data %x,%x,%x,%x,%x,%x,%x,%x", 
-                    temp_can_message.identifier, 
-                    temp_can_message.data_length_code, 
-                    temp_can_message.data[0], 
-                    temp_can_message.data[1], 
-                    temp_can_message.data[2], 
-                    temp_can_message.data[3], 
-                    temp_can_message.data[4], 
-                    temp_can_message.data[5],
-                    temp_can_message.data[6],
-                    temp_can_message.data[7]);
+            #if 0
+            char logbuf[100] = {0};
+            char *p = logbuf;
+            char len = temp_can_message.data_length_code;
+            char i = 0;
+
+            if(len > 0)
+            {
+                for(i = 0; i < len; i++)
+                {
+                    sprintf(p, " %02x", *(temp_can_message.data +i));
+                    p = p + 3;
+                }
+                ESP_LOGI("CANsend","ID: %03X , [%d] Data %s", temp_can_message.identifier, len, logbuf);
+            }else
+            {
+                ESP_LOGI("CANsend","ID: %03X ", temp_can_message.identifier);
+            }
+            #endif
         }
         else
         {

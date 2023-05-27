@@ -72,8 +72,8 @@
             || CO_NO_SDO_CLIENT                           > 128    \
             || (CO_NO_RPDO < 1 || CO_NO_RPDO > 0x200)              \
             || (CO_NO_TPDO < 1 || CO_NO_TPDO > 0x200)              \
-            || ODL_consumerHeartbeatTime_arrayLength      == 0     \
-            || ODL_errorStatusBits_stringLength           < 10     \
+            || ODL_consumerHeartbeatTime_arrayLength      == 0     \ 
+            || ODL_errorStatusBits_arrayLength            < 10     \
             || CO_NO_LSS_SERVER                           >  1     \
             || CO_NO_LSS_CLIENT                           >  1     \
             || (CO_NO_LSS_SERVER > 0 && CO_NO_LSS_CLIENT > 0)
@@ -428,7 +428,7 @@ CO_ReturnError_t CO_new(void)
     if(CO->SYNC                         == NULL) errCnt++;
   #endif
   #if CO_NO_TIME == 1
-    if(CO->TIME                     	== NULL) errCnt++;
+    if(CO->TIME                         == NULL) errCnt++;
   #endif
     for(i=0; i<CO_NO_RPDO; i++){
         if(CO->RPDO[i]                  == NULL) errCnt++;
@@ -545,7 +545,7 @@ CO_ReturnError_t CO_CANopenInit(
                 COB_IDServerToClient,
                 OD_H1200_SDO_SERVER_PARAM+i,
                 i==0 ? 0 : CO->SDO[0],
-               &CO_OD[0],
+                &CO_OD[0],
                 CO_OD_NoOfElements,
                 CO_SDO_ODExtensions,
                 nodeId,
@@ -563,7 +563,7 @@ CO_ReturnError_t CO_CANopenInit(
             CO->emPr,
             CO->SDO[0],
            &OD_errorStatusBits[0],
-            ODL_errorStatusBits_stringLength,
+            ODL_errorStatusBits_arrayLength,
            &OD_errorRegister,
            &OD_preDefinedErrorField[0],
             ODL_preDefinedErrorField_arrayLength,
@@ -768,7 +768,7 @@ CO_ReturnError_t CO_init(
         CO_delete(CANdriverState);
         return err;
     }
-
+    
     err = CO_CANopenInit(nodeId);
     if (err) {
         CO_delete(CANdriverState);
@@ -947,7 +947,9 @@ void CO_process_TPDO(
     /* Verify PDO Change Of State and process PDOs */
     for(i=0; i<CO_NO_TPDO; i++){
         if(!co->TPDO[i]->sendRequest)
+        {
             co->TPDO[i]->sendRequest = CO_TPDOisCOS(co->TPDO[i]);
+        }
         CO_TPDO_process(co->TPDO[i], syncWas, timeDifference_us);
     }
 }

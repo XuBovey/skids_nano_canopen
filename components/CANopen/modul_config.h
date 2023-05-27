@@ -20,13 +20,13 @@
 
 //----------------------------------
 //#### CANOPEN CONFIG ####
-#define CAN_BITRATE 500    /** baudrate 125kbit*/
-#define NODE_ID_SELF 0x42   /** ESP32 Modul ID*/
-#define NODE_ID_MOTOR0 0x1A /** Dunker Motor ID*/
-#define NODE_ID_MOTOR1 0x1B /** Dunker Motor ID*/
-#define NODE_ID_GYRO 0x14   /** Dunker Motor ID*/
-#define NODE_ID_HATOX 0x13  /** Dunker Motor ID*/
-#define NODE_ID_PMC0 0x05 /** Dunker Motor ID*/
+#define CAN_BITRATE         500     /** baudrate 125kbit*/
+#define NODE_ID_MASTER      0x01    /** ESP32 Master ID*/
+#define NODE_ID_MOTOR0      0x1A    /** Dunker Motor ID*/
+#define NODE_ID_MOTOR1      0x1B    /** Dunker Motor ID*/
+#define NODE_ID_GYRO        0x14    /** Dunker Motor ID*/
+#define NODE_ID_HATOX       0x13    /** Dunker Motor ID*/
+#define NODE_ID_PMC0        0x05    /** Pusi Motor ID*/
 //----------------------------------
 
 //#####################################################################

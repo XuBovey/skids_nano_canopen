@@ -34,216 +34,216 @@ uint8_t motorNumber = 0;
 
 void dunker(void)
 {
-		motorNumber = numMotors;
-		numMotors++;
+        motorNumber = numMotors;
+        numMotors++;
 }
 
 int8_t dunker_init(CO_t *CO, uint8_t nodeId, uint8_t tpdoNum)
 {
-		int8_t ret = 0;
-		_CO = CO;
-		_nodeId = nodeId;
-		_tpdoNum = tpdoNum;
-		/*Configure PDO Mapping on Device 0x1A*/
-		uint32_t mappedRxObjects[] = {0x40000108, 0x40030108, 0x40040108, 0x43000120};
-		ret = dunker_mapRPDO(0, _nodeId, mappedRxObjects, 4);
-		uint32_t mappedTxObjects[] = {0x40020120, 0x40010110};
-		ret += dunker_mapTPDO(0, _nodeId, mappedTxObjects, 2, 0x100, 0x100);
-		return ret;
+        int8_t ret = 0;
+        _CO = CO;
+        _nodeId = nodeId;
+        _tpdoNum = tpdoNum;
+        /*Configure PDO Mapping on Device 0x1A*/
+        uint32_t mappedRxObjects[] = {0x40000108, 0x40030108, 0x40040108, 0x43000120};
+        ret = dunker_mapRPDO(0, _nodeId, mappedRxObjects, 4);
+        uint32_t mappedTxObjects[] = {0x40020120, 0x40010110};
+        ret += dunker_mapTPDO(0, _nodeId, mappedTxObjects, 2, 0x100, 0x100);
+        return ret;
 }
 
 int8_t dunker_clearError(void)
 {
-		*motor[motorNumber].command = CMD_ClearError;
-		*motor[motorNumber].velocity = 0;
-		CO->TPDO[_tpdoNum]->sendRequest = 1;
-		return 0;
+        *motor[motorNumber].command = CMD_ClearError;
+        *motor[motorNumber].velocity = 0;
+        CO->TPDO[_tpdoNum]->sendRequest = 1;
+        return 0;
 }
 
 int8_t dunker_quickStop(void)
 {
-		*motor[motorNumber].command = CMD_QuickStop;
-		*motor[motorNumber].velocity = 0;
-		CO->TPDO[_tpdoNum]->sendRequest = 1;
-		return 0;
+        *motor[motorNumber].command = CMD_QuickStop;
+        *motor[motorNumber].velocity = 0;
+        CO->TPDO[_tpdoNum]->sendRequest = 1;
+        return 0;
 }
 
 int8_t dunker_halt(void)
 {
-		*motor[motorNumber].command = CMD_Halt;
-		*motor[motorNumber].velocity = 0;
-		CO->TPDO[_tpdoNum]->sendRequest = 1;
-		return 0;
+        *motor[motorNumber].command = CMD_Halt;
+        *motor[motorNumber].velocity = 0;
+        CO->TPDO[_tpdoNum]->sendRequest = 1;
+        return 0;
 }
 
 int8_t dunker_continueMovement(void)
 {
-		*motor[motorNumber].command = CMD_Continue;
-		*motor[motorNumber].velocity = 0;
-		CO->TPDO[_tpdoNum]->sendRequest = 1;
-		return 0;
+        *motor[motorNumber].command = CMD_Continue;
+        *motor[motorNumber].velocity = 0;
+        CO->TPDO[_tpdoNum]->sendRequest = 1;
+        return 0;
 }
 
 int8_t dunker_setEnable(uint8_t value)
 {
 
-		int8_t ret = 0;
+        int8_t ret = 0;
 
-		*motor[motorNumber].mode = OPERATION_MODE;
-		*motor[motorNumber].power = 1;
-		CO->TPDO[_tpdoNum]->sendRequest = 1;
+        *motor[motorNumber].mode = OPERATION_MODE;
+        *motor[motorNumber].power = 1;
+        CO->TPDO[_tpdoNum]->sendRequest = 1;
 
-		/*Check for fault condition*/
-		if (!(*motor[motorNumber].status & STAT_Error))
-		{
-				if (value)
-				{
-						while (!(*motor[motorNumber].status & STAT_Enabled))
-						{
-								vTaskDelay(1 / portTICK_PERIOD_MS);
-								*motor[motorNumber].mode = OPERATION_MODE;
-								*motor[motorNumber].power = value;
-								CO->TPDO[_tpdoNum]->sendRequest = 1;
-						}
-				}
-				else
-				{
-						*motor[motorNumber].mode = OPERATION_MODE;
-						*motor[motorNumber].power = value;
-						CO->TPDO[_tpdoNum]->sendRequest = 1;
-				}
-		}
-		else
-		{
-				ret = *motor[motorNumber].error; //Can't dis-/enable motor while in fault condition
-				ESP_LOGE("Dunker.setEnable", "Can't dis-/enable motor while in fault condition!");
-		}
-		return ret;
+        /*Check for fault condition*/
+        if (!(*motor[motorNumber].status & STAT_Error))
+        {
+                if (value)
+                {
+                        while (!(*motor[motorNumber].status & STAT_Enabled))
+                        {
+                                vTaskDelay(1 / portTICK_PERIOD_MS);
+                                *motor[motorNumber].mode = OPERATION_MODE;
+                                *motor[motorNumber].power = value;
+                                CO->TPDO[_tpdoNum]->sendRequest = 1;
+                        }
+                }
+                else
+                {
+                        *motor[motorNumber].mode = OPERATION_MODE;
+                        *motor[motorNumber].power = value;
+                        CO->TPDO[_tpdoNum]->sendRequest = 1;
+                }
+        }
+        else
+        {
+                ret = *motor[motorNumber].error; //Can't dis-/enable motor while in fault condition
+                ESP_LOGE("Dunker.setEnable", "Can't dis-/enable motor while in fault condition!");
+        }
+        return ret;
 }
 
 int8_t dunker_setSpeed(int32_t speed)
 {
-		int8_t ret = 0;
+        int8_t ret = 0;
 
-		/*Check for fault condition*/
-		if (!(*motor[motorNumber].status & STAT_Error))
-		{
-				*motor[motorNumber].velocity = speed;
-				CO->TPDO[_tpdoNum]->sendRequest = 1;
-		}
-		else
-		{
-				ret = *motor[motorNumber].error; //Can't set speed while in fault condition
-		}
-		return ret;
+        /*Check for fault condition*/
+        if (!(*motor[motorNumber].status & STAT_Error))
+        {
+                *motor[motorNumber].velocity = speed;
+                CO->TPDO[_tpdoNum]->sendRequest = 1;
+        }
+        else
+        {
+                ret = *motor[motorNumber].error; //Can't set speed while in fault condition
+        }
+        return ret;
 }
 
 int8_t dunker_coProcessUploadSDO(void)
 {
-		uint32_t SdoAbortCode = CO_SDO_AB_NONE;
-		int8_t ret = 0;
-		uint32_t dataSize = 0;
+        uint32_t SdoAbortCode = CO_SDO_AB_NONE;
+        int8_t ret = 0;
+        uint32_t dataSize = 0;
 
-		do
-		{
-				ret = CO_SDOclientUpload(_CO->SDOclient[0], 1, 5000, &dataSize, &SdoAbortCode);
+        do
+        {
+                ret = CO_SDOclientUpload(_CO->SDOclient[0], 1, 5000, &dataSize, &SdoAbortCode);
 
-		} while (ret > 0);
-		return ret;
+        } while (ret > 0);
+        return ret;
 }
 
 int8_t dunker_coProcessDownloadSDO(void)
 {
-		uint32_t SdoAbortCode = CO_SDO_AB_NONE;
-		int8_t ret = 0;
-		do
-		{
-				ret = CO_SDOclientDownload(_CO->SDOclient[0], 1, 5000, &SdoAbortCode);
-		} while (ret > 0);
-		return ret;
+        uint32_t SdoAbortCode = CO_SDO_AB_NONE;
+        int8_t ret = 0;
+        do
+        {
+                ret = CO_SDOclientDownload(_CO->SDOclient[0], 1, 5000, &SdoAbortCode);
+        } while (ret > 0);
+        return ret;
 }
 
 int8_t dunker_mapRPDO(uint8_t pdoNumber, uint8_t nodeId, uint32_t *mappedObjects, uint8_t numMappedObjects)
 {
-		int8_t ret = 0;
-		uint32_t v32 = 0; //Temporary Storage
-		uint8_t v8 = 0; //Temporary Storage
+        int8_t ret = 0;
+        uint32_t v32 = 0; //Temporary Storage
+        uint8_t v8 = 0; //Temporary Storage
 
-		//RPDO Disable
-		v32 = ((0x200 + nodeId + pdoNumber) | 0x80000000);
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1400 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //RPDO Disable
+        v32 = ((0x200 + nodeId + pdoNumber) | 0x80000000);
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1400 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//RPDO Disable Mapping
-		v8 = 0;
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1600 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //RPDO Disable Mapping
+        v8 = 0;
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1600 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//RPDO Mapping
-		for (uint8_t i = 0; i < numMappedObjects; i++)
-		{
-				v32 = mappedObjects[i];
-				CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1600 + pdoNumber, 1 + i, (uint8_t *)&v32, sizeof(v32), 0);
-				ret = dunker_coProcessDownloadSDO();
-		}
+        //RPDO Mapping
+        for (uint8_t i = 0; i < numMappedObjects; i++)
+        {
+                v32 = mappedObjects[i];
+                CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1600 + pdoNumber, 1 + i, (uint8_t *)&v32, sizeof(v32), 0);
+                ret = dunker_coProcessDownloadSDO();
+        }
 
-		//RPDO Enable Mapping
-		v8 = numMappedObjects;
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1600 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //RPDO Enable Mapping
+        v8 = numMappedObjects;
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1600 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//RPDO Enable
-		v32 = (0x200 + nodeId + pdoNumber);
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1400 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //RPDO Enable
+        v32 = (0x200 + nodeId + pdoNumber);
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1400 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		return ret;
+        return ret;
 }
 
 int8_t dunker_mapTPDO(uint8_t pdoNumber, uint8_t nodeId, uint32_t *mappedObjects, uint8_t numMappedObjects, uint16_t eventTime, uint16_t inhibitTime)
 {
-		int8_t ret = 0;
-		uint32_t v32 = 0;
-		uint16_t v16 = 0;
-		uint8_t v8 = 0;
+        int8_t ret = 0;
+        uint32_t v32 = 0;
+        uint16_t v16 = 0;
+        uint8_t v8 = 0;
 
-		//TPDO Disable
-		v32 = ((0x180 + nodeId + pdoNumber) | 0x80000000);
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //TPDO Disable
+        v32 = ((0x180 + nodeId + pdoNumber) | 0x80000000);
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//TPDO Disable Mapping
-		v8 = 0;
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1a00 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //TPDO Disable Mapping
+        v8 = 0;
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1a00 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//TPDO Set Eventtime
-		v16 = eventTime;
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 5, (uint8_t *)&v16, sizeof(v16), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //TPDO Set Eventtime
+        v16 = eventTime;
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 5, (uint8_t *)&v16, sizeof(v16), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//TPDO Set Inhibittime
-		v16 = inhibitTime;
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 3, (uint8_t *)&v16, sizeof(v16), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //TPDO Set Inhibittime
+        v16 = inhibitTime;
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 3, (uint8_t *)&v16, sizeof(v16), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//TPDO Mapping
-		for (uint8_t i = 0; i < numMappedObjects; i++)
-		{
-				v32 = mappedObjects[i];
-				CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1a00 + pdoNumber, 1 + i, (uint8_t *)&v32, sizeof(v32), 0);
-				ret = dunker_coProcessDownloadSDO();
-		}
+        //TPDO Mapping
+        for (uint8_t i = 0; i < numMappedObjects; i++)
+        {
+                v32 = mappedObjects[i];
+                CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1a00 + pdoNumber, 1 + i, (uint8_t *)&v32, sizeof(v32), 0);
+                ret = dunker_coProcessDownloadSDO();
+        }
 
-		//TPDO Enable Mapping
-		v8 = numMappedObjects;
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1a00 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //TPDO Enable Mapping
+        v8 = numMappedObjects;
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1a00 + pdoNumber, 0, (uint8_t *)&v8, sizeof(v8), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		//TPDO Enable
-		v32 = (0x180 + nodeId + pdoNumber);
-		CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
-		ret = dunker_coProcessDownloadSDO();
+        //TPDO Enable
+        v32 = (0x180 + nodeId + pdoNumber);
+        CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x1800 + pdoNumber, 1, (uint8_t *)&v32, sizeof(v32), 0);
+        ret = dunker_coProcessDownloadSDO();
 
-		return ret;
+        return ret;
 }

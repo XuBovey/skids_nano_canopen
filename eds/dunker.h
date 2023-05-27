@@ -52,12 +52,12 @@ static const int16_t OPERATION_MODE = 0x03; //Operation Mode 2 "Special Profile 
  */
 typedef struct motorRegister_s
 {
-		uint8_t *command;
-		int16_t *error;
-		uint32_t *status;
-		uint8_t *mode;
-		uint8_t *power;
-		int32_t *velocity;
+        uint8_t *command;
+        int16_t *error;
+        uint32_t *status;
+        uint8_t *mode;
+        uint8_t *power;
+        int32_t *velocity;
 } motorRegister;
 
 /**

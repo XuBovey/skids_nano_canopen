@@ -32,136 +32,171 @@ esp_timer_handle_t periodicTimer;
 
 void mainTask(void *pvParameter)
 {
-		coMainTaskArgs.callback = &coMainTask;
-		coMainTaskArgs.name = "coMainTask";
-		CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
-		vTaskDelay(BOOT_WAIT / portTICK_PERIOD_MS);
-		while (reset != CO_RESET_APP)
-		{
-				/* CANopen communication reset - initialize CANopen objects *******************/
-				CO_ReturnError_t err;
-				uint32_t coInterruptCounterPrevious;
+    coMainTaskArgs.callback = &coMainTask;
+    coMainTaskArgs.name = "coMainTask";
+    CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
 
-				/* initialize CANopen */
-				err = CO_init(NULL, NODE_ID_SELF /* NodeID */, CAN_BITRATE /* bit rate */);
-				if (err != CO_ERROR_NO)
-				{
-						ESP_LOGE("mainTask", "CO_init failed. Errorcode: %d", err);
-						CO_errorReport(CO->em, CO_EM_MEMORY_ALLOCATION_ERROR, CO_EMC_SOFTWARE_INTERNAL, err);
-						esp_restart();
-				}
-				/* Configure Timer interrupt function for execution every CO_MAIN_TASK_INTERVAL */
-				ESP_ERROR_CHECK(esp_timer_create(&coMainTaskArgs, &periodicTimer));
-				ESP_ERROR_CHECK(esp_timer_start_periodic(periodicTimer, CO_MAIN_TASK_INTERVAL));
+    vTaskDelay(BOOT_WAIT / portTICK_PERIOD_MS);
 
-				/* start CAN */
-				ESP_LOGI("mainTask", "start can.");
-				CO_CANsetNormalMode(CO->CANmodule[0]);
+    while (reset != CO_RESET_APP)
+    {
+        /* CANopen communication reset - initialize CANopen objects *******************/
+        CO_ReturnError_t err;
+        uint32_t coInterruptCounterPrevious;
 
-				reset = CO_RESET_NOT;
-				coInterruptCounterPrevious = coInterruptCounter;
+        /* initialize CANopen */
+        err = CO_init(NULL, NODE_ID_MASTER /* NodeID */, CAN_BITRATE /* bit rate */);
+        if (err != CO_ERROR_NO)
+        {
+            ESP_LOGE("mainTask", "CO_init failed. Errorcode: %d", err);
+            CO_errorReport(CO->em, CO_EM_MEMORY_ALLOCATION_ERROR, CO_EMC_SOFTWARE_INTERNAL, err);
+            esp_restart();
+        }
+        /* Configure Timer interrupt function for execution every CO_MAIN_TASK_INTERVAL */
+        ESP_ERROR_CHECK(esp_timer_create(&coMainTaskArgs, &periodicTimer));
+        ESP_ERROR_CHECK(esp_timer_start_periodic(periodicTimer, CO_MAIN_TASK_INTERVAL));
 
-				/*Set Operating Mode of Slaves to Operational*/
-				// CO_sendNMTcommand(CO, 0x01, NODE_ID_MOTOR0);
-				//CO_sendNMTcommand(CO, 0x01, NODE_ID_MOTOR1);
-				//CO_sendNMTcommand(CO, 0x01, NODE_ID_GYRO);
-				//CO_sendNMTcommand(CO, 0x01, NODE_ID_HATOX);
-				vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
-				ESP_LOGI("mainTask", "send nmt command.");
-				CO_sendNMTcommand(CO, 0x01, NODE_ID_PMC0);
+        /* start CAN */
+        ESP_LOGI("mainTask", "start can ctrl.");
+        CO_CANsetNormalMode(CO->CANmodule[0]);
 
-				/* Initialise system components */
-				// pmc_init(CO, NODE_ID_MOTOR0, 2);
-				// gyro_init(CO);
-				ESP_LOGI("mainTask", "motor init done.");
-				pmc_init(CO, NODE_ID_PMC0, 0);
-				
+        reset = CO_RESET_NOT;
+        coInterruptCounterPrevious = coInterruptCounter;
 
-				/* application init code goes here. */
-				//rosserialSetup();
-				
-				ESP_LOGI("mainTask", "loop.");
-				// pmc_test();
+        // CO_sendNMTcommand(CO, CO_NMT_ENTER_PRE_OPERATIONAL, NODE_ID_PMC0);
+		ESP_LOGI("mainTask", "set CO_NMT_ENTER_PRE_OPERATIONAL.");
+        CO_sendNMTcommand(CO, CO_NMT_ENTER_PRE_OPERATIONAL, 0x00);
+        // vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+        ESP_LOGI("mainTask", "pmc_init."); 
+        pmc_init(CO, NODE_ID_PMC0, 0);
 
-				while (reset == CO_RESET_NOT)
-				{
-						/* loop for normal program execution ******************************************/
-						uint32_t coInterruptCounterCopy;
-						uint32_t coInterruptCounterDiff;
-						coInterruptCounterCopy = coInterruptCounter;
-						coInterruptCounterDiff = coInterruptCounterCopy - coInterruptCounterPrevious;
-						coInterruptCounterPrevious = coInterruptCounterCopy;
+        /*Set Operating Mode of Slaves to Operational*/
+        // vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+        ESP_LOGI("mainTask", "set motor enter operational.");
+        // CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, NODE_ID_PMC0);
+        CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, 0x00);
+        // ESP_LOGI("mainTask", "mode = %d.", CO->NMT->operatingState);
 
-						/* CANopen process */
-						reset = CO_process(CO, coInterruptCounterDiff, NULL);
+        /* Initialise system components */
 
-						if(coInterruptCounter >= 6000)
-						{
-							// pmc_move_steps(1000);
-							pmc_sdoMotorTest();
-						}
-#if 0
-						/* Nonblocking application code may go here. */
-						if (counter == 0)
-						{
-								pmc_setEnable(1);
-								pmc_setSpeed(1000);
-								counter++;
-						}
-						if (coInterruptCounter > 4000 && counter == 1)
-						{
-								pmc_setSpeed(3000);
-								counter++;
-						}
-						if (coInterruptCounter > 8000 && counter == 2)
-						{
-								pmc_quickStop();
-								counter++;
-						}
-						if (coInterruptCounter > 12000 && counter == 3)
-						{
-								pmc_continueMovement();
-								pmc_setSpeed(1000);
-								counter++;
-						}
-						if (coInterruptCounter > 16000 && counter == 4)
-						{
-								pmc_halt();
-								pmc_setEnable(0);
-								counter++;
-						}
+        /* application init code goes here. */
+		ESP_LOGI("mainTask", "loop.");
+	
+#define PDO_TEST 1
+
+#ifndef PDO_TEST
+        while(1)
+        {
+            pmc_sdoMotorTest();
+            vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+        }
 #endif
-						/* Wait */
-						vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
-				}
-		}
-		/* program exit
-		 * ***************************************************************/
-		/* reset */
-		esp_restart();
+#ifdef PDO_TEST
+        while (reset == CO_RESET_NOT)
+        {
+            uint32_t coInterruptCounterCopy;
+            uint32_t coInterruptCounterDiff;
+            int32_t setSpeed = 0;
+            /* loop for normal program execution ******************************************/
+
+            coInterruptCounterCopy = coInterruptCounter;
+            coInterruptCounterDiff = coInterruptCounterCopy - coInterruptCounterPrevious;
+            coInterruptCounterPrevious = coInterruptCounterCopy;
+
+            // if(CO->NMT->operatingState != 5){
+            //     ESP_LOGI("mainTask", "set self enter operational, current = %d.", CO->NMT->operatingState);
+            //     CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, NODE_ID_MASTER);
+            // }
+
+            /* CANopen process */
+			// ESP_LOGI("mainTask", "OD_errorRegister = 0x%x.", OD_errorRegister);
+            reset = CO_process(CO, coInterruptCounterDiff, NULL);			
+
+            /* Nonblocking application code may go here. */
+            if (counter == 0)
+            {
+                setSpeed = 20000;
+                ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
+                pmc_setSpeed(setSpeed);
+                counter++;
+            }
+            if (coInterruptCounter > 10 && counter == 1)
+            {
+                setSpeed = 50000;
+                ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
+                pmc_setSpeed(setSpeed);
+                counter++;
+            }
+            if (coInterruptCounter > 20 && counter == 2)
+            {
+                setSpeed = 80000;
+                ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
+                pmc_setSpeed(setSpeed);
+                counter++;
+            }
+            if (coInterruptCounter > 30 && counter == 3)
+            {
+                setSpeed = 100000;
+                ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
+                pmc_setSpeed(setSpeed);
+                counter++;
+            }
+            if (coInterruptCounter > 80 && counter == 4)
+            {
+                setSpeed = 150000;
+                ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
+                pmc_setSpeed(setSpeed);
+                counter++;
+            }
+            if (coInterruptCounter > 150 && counter == 5)
+            {
+                ESP_LOGI("mainTask", "pmc motor halt.");
+                pmc_quickStop();
+                counter++;
+                coInterruptCounter = 0;
+            }
+            if (coInterruptCounter > 200 && counter == 6)
+            {
+                ESP_LOGI("mainTask", "pmc motor halt.");
+                pmc_quickStop();
+                counter++;
+                coInterruptCounter = 0;
+            }
+            // ESP_LOGI("mainTask", "pmc setSpeed = %d.", setSpeed);
+#endif
+            if(counter == 7)
+                counter = 0;
+            /* Wait */
+            vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+            coInterruptCounter += 1;
+        }
+            
+    }
+    /* program exit
+        * ***************************************************************/
+    /* reset */
+    esp_restart();
 }
 
 /* CanOpen-Task executes in constant intervals ********************************/
 static void coMainTask(void *arg)
 {
-		coInterruptCounter++;
+    if (CO->CANmodule[0]->CANnormal)
+    {
+        bool_t syncWas = true;
 
-		if (CO->CANmodule[0]->CANnormal)
-		{
-				bool_t syncWas;
+        /* Process Sync */
+        syncWas = CO_process_SYNC(CO, CO_MAIN_TASK_INTERVAL);
 
-				/* Process Sync */
-				syncWas = CO_process_SYNC(CO, CO_MAIN_TASK_INTERVAL);
+        /* Read inputs */
+        CO_process_RPDO(CO, syncWas);
 
-				/* Read inputs */
-				CO_process_RPDO(CO, syncWas);
-
-				/* Write outputs */
-				CO_process_TPDO(CO, syncWas, CO_MAIN_TASK_INTERVAL);
-		}
+        /* Write outputs */
+        CO_process_TPDO(CO, syncWas, CO_MAIN_TASK_INTERVAL);
+    }
 }
 
 void app_main()
 {
-		xTaskCreate(&mainTask, "mainTask", 4096, NULL, 5, NULL);
+    xTaskCreate(&mainTask, "mainTask", 4096, NULL, 5, NULL);
 }

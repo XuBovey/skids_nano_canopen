@@ -364,11 +364,6 @@
         #define OD_1600_1_RPDOMappingParameter_mappedObject1        1
         #define OD_1600_2_RPDOMappingParameter_mappedObject2        2
         #define OD_1600_3_RPDOMappingParameter_mappedObject3        3
-        #define OD_1600_4_RPDOMappingParameter_mappedObject4        4
-        #define OD_1600_5_RPDOMappingParameter_mappedObject5        5
-        #define OD_1600_6_RPDOMappingParameter_mappedObject6        6
-        #define OD_1600_7_RPDOMappingParameter_mappedObject7        7
-        #define OD_1600_8_RPDOMappingParameter_mappedObject8        8
 
 /*1601 */
         #define OD_1601_RPDOMappingParameter                        0x1601
@@ -386,6 +381,14 @@
         #define OD_1603_RPDOMappingParameter                        0x1603
 
         #define OD_1603_0_RPDOMappingParameter_maxSubIndex          0
+        #define OD_1603_1_RPDOMappingParameter_mappedObject1        1
+        #define OD_1603_2_RPDOMappingParameter_mappedObject2        2
+        #define OD_1603_3_RPDOMappingParameter_mappedObject3        3
+        #define OD_1603_4_RPDOMappingParameter_mappedObject4        4
+        #define OD_1603_5_RPDOMappingParameter_mappedObject5        5
+        #define OD_1603_6_RPDOMappingParameter_mappedObject6        6
+        #define OD_1603_7_RPDOMappingParameter_mappedObject7        7
+        #define OD_1603_8_RPDOMappingParameter_mappedObject8        8
 
 /*1800 */
         #define OD_1800_TPDOCommunicationParameter                  0x1800
@@ -450,16 +453,20 @@
         #define OD_1A01_0_TPDOMappingParameter_maxSubIndex          0
         #define OD_1A01_1_TPDOMappingParameter_mappedObject1        1
         #define OD_1A01_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A01_3_TPDOMappingParameter_mappedObject3        3
 
 /*1A02 */
         #define OD_1A02_TPDOMappingParameter                        0x1A02
 
         #define OD_1A02_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A02_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A02_2_TPDOMappingParameter_mappedObject2        2
 
 /*1A03 */
         #define OD_1A03_TPDOMappingParameter                        0x1A03
 
         #define OD_1A03_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A03_1_TPDOMappingParameter_mappedObject1        1
 
 /*1F80 */
         #define OD_1F80_NMTStartup                                  0x1F80
@@ -467,8 +474,20 @@
 /*1F89 */
         #define OD_1F89_bootTime                                    0x1F89
 
-/*2100 */
-        #define OD_2100_errorStatusBits                             0x2100
+/*2000 */
+        #define OD_2000_errorStatusBits                             0x2000
+
+        #define OD_2000_0_errorStatusBits_maxSubIndex               0
+        #define OD_2000_1_errorStatusBits_subObject1                1
+        #define OD_2000_2_errorStatusBits_subObject1                2
+        #define OD_2000_3_errorStatusBits_subObject1                3
+        #define OD_2000_4_errorStatusBits_subObject1                4
+        #define OD_2000_5_errorStatusBits_subObject1                5
+        #define OD_2000_6_errorStatusBits_subObject1                6
+        #define OD_2000_7_errorStatusBits_subObject1                7
+        #define OD_2000_8_errorStatusBits_subObject1                8
+        #define OD_2000_9_errorStatusBits_subObject1                9
+        #define OD_2000_10_errorStatusBits_subObject1               10
 
 /*6000 */
         #define OD_6000_motorStatus                                 0x6000
@@ -486,7 +505,7 @@
         #define OD_6004_stepRelativePosition                        0x6004
 
 /*6005 */
-        #define OD_6005_speedMode                                   0x6005
+        #define OD_6005_workMode                                    0x6005
 
 /*6006 */
         #define OD_6006_startSpeed                                  0x6006
@@ -662,13 +681,13 @@ struct sCO_OD_RAM{
 /*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
 /*1F80      */ UNSIGNED32     NMTStartup;
 /*1F89      */ UNSIGNED32     bootTime;
-/*2100      */ OCTET_STRING   errorStatusBits[11];
+/*2000      */ UNSIGNED8       errorStatusBits[10];
 /*6000      */ UNSIGNED8      motorStatus;
 /*6001      */ UNSIGNED8      controlStatus;
 /*6002      */ UNSIGNED8      motorDirection;
 /*6003      */ UNSIGNED32     maxSpeed;
 /*6004      */ INTEGER32      stepRelativePosition;
-/*6005      */ UNSIGNED8      speedMode;
+/*6005      */ UNSIGNED8      workMode;
 /*6006      */ UNSIGNED16     startSpeed;
 /*6007      */ UNSIGNED16     endSpeed;
 /*6008      */ UNSIGNED8      accValue;
@@ -846,9 +865,10 @@ extern struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM;
 /*1F89, Data Type: UNSIGNED32 */
         #define OD_bootTime                                         CO_OD_RAM.bootTime
 
-/*2100, Data Type: OCTET_STRING */
+/*2000, Data Type: UNSIGNED8, Array[10] */
         #define OD_errorStatusBits                                  CO_OD_RAM.errorStatusBits
-        #define ODL_errorStatusBits_stringLength                    11
+        #define ODL_errorStatusBits_arrayLength                     10
+        #define ODA_errorStatusBits_subObject1                      0
 
 /*6000, Data Type: UNSIGNED8 */
         #define OD_motorStatus                                      CO_OD_RAM.motorStatus
@@ -866,7 +886,7 @@ extern struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM;
         #define OD_stepRelativePosition                             CO_OD_RAM.stepRelativePosition
 
 /*6005, Data Type: UNSIGNED8 */
-        #define OD_speedMode                                        CO_OD_RAM.speedMode
+        #define OD_workMode                                         CO_OD_RAM.workMode
 
 /*6006, Data Type: UNSIGNED16 */
         #define OD_startSpeed                                       CO_OD_RAM.startSpeed

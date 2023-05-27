@@ -85,7 +85,7 @@ extern "C" {
 #if CO_NO_LSS_CLIENT == 1
     #include "CO_LSSmaster.h"
 #endif
-
+    #include "esp_log.h"
 /**
  * Default CANopen identifiers.
  *
@@ -98,7 +98,7 @@ typedef enum{
      CO_CAN_ID_NMT_SERVICE       = 0x000,   /**< 0x000, Network management */
      CO_CAN_ID_SYNC              = 0x080,   /**< 0x080, Synchronous message */
      CO_CAN_ID_EMERGENCY         = 0x080,   /**< 0x080, Emergency messages (+nodeID) */
-	 CO_CAN_ID_TIME        		 = 0x100,   /**< 0x100, Time message */
+     CO_CAN_ID_TIME              = 0x100,   /**< 0x100, Time message */
      CO_CAN_ID_TPDO_1            = 0x180,   /**< 0x180, Default TPDO1 (+nodeID) */
      CO_CAN_ID_RPDO_1            = 0x200,   /**< 0x200, Default RPDO1 (+nodeID) */
      CO_CAN_ID_TPDO_2            = 0x280,   /**< 0x280, Default TPDO2 (+nodeID) */

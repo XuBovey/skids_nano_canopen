@@ -45,25 +45,25 @@ struct sCO_OD_RAM CO_OD_RAM = {
 /*1018*/ {0x4L, 0x50555349L, 0x0000L, 0x0000L, 0x0000L},
 /*1200*/ {{0x2L, 0x0600L, 0x0580L}},
 /*1280*/ {{0x3L, 0x0605L, 0x0585L, 0x5L}},
-/*1400*/ {{0x6L, 0x0200L, 0xFFL},
-/*1401*/ {0x6L, 0x0300L, 0xFFL},
-/*1402*/ {0x6L, 0x0400L, 0xFEL},
-/*1403*/ {0x6L, 0x0500L, 0xFEL}},
-/*1600*/ {{0x8L, 0x60000008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L},
-/*1601*/ {0x2L, 0x600C0020L, 0x60300020L},
+/*1400*/ {{0x6L, 0x0185L, 0xFEL},
+/*1401*/ {0x6L, 0x0285L, 0xFEL},
+/*1402*/ {0x6L, 0x80000385L, 0xFEL},
+/*1403*/ {0x6L, 0x80000485L, 0xFEL}},
+/*1600*/ {{0x3L, 0x60000008L, 0x60010008L, 0x600C0020L},
+/*1601*/ {0x2L, 0x60300020L, 0x600C0020L},
 /*1602*/ {0x0L},
-/*1603*/ {0x0L}},
-/*1800*/ {{0x6L, 0x0180L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
-/*1801*/ {0x6L, 0x0280L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
-/*1802*/ {0x6L, 0x80000000L, 0x1L, 0x00, 0x0L, 0x00, 0x0L},
-/*1803*/ {0x6L, 0x80000000L, 0xFCL, 0x00, 0x0L, 0x00, 0x0L}},
-/*1A00*/ {{0x8L, 0x60010008L, 0x60200008L, 0x60050008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L},
-/*1A01*/ {0x2L, 0x601C0020L, 0x60030020L},
-/*1A02*/ {0x0L},
-/*1A03*/ {0x0L}},
+/*1603*/ {0x8L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L}},
+/*1800*/ {{0x6L, 0x80000205L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
+/*1801*/ {0x6L, 0x0305L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
+/*1802*/ {0x6L, 0x0405L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L},
+/*1803*/ {0x6L, 0x0505L, 0xFEL, 0x00, 0x0L, 0x00, 0x0L}},
+/*1A00*/ {{0x8L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L, 0x20008L},
+/*1A01*/ {0x3L, 0x60030020L, 0x60010008L, 0x60050008L},
+/*1A02*/ {0x2L, 0x601C0020L, 0x600C0020L},
+/*1A03*/ {0x1L, 0x60200008L}},
 /*1F80*/ 0x0001L,
 /*1F89*/ 0x0000L,
-/*2100*/ {},
+/*2000*/ {0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L, 0x0L},
 /*6000*/ 0x0L,
 /*6001*/ 0x0L,
 /*6002*/ 0x0L,
@@ -193,16 +193,11 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
            {(void*)&CO_OD_RAM.RPDOCommunicationParameter[3].transmissionType, 0x0E, 0x1 },
 };
 
-/*0x1600*/ const CO_OD_entryRecord_t OD_record1600[9] = {
+/*0x1600*/ const CO_OD_entryRecord_t OD_record1600[4] = {
            {(void*)&CO_OD_RAM.RPDOMappingParameter[0].numberOfMappedObjects, 0x0E, 0x1 },
            {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject1, 0x8E, 0x4 },
            {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject2, 0x8E, 0x4 },
            {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject3, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject4, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject5, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject6, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject7, 0x8E, 0x4 },
-           {(void*)&CO_OD_RAM.RPDOMappingParameter[0].mappedObject8, 0x8E, 0x4 },
 };
 
 /*0x1601*/ const CO_OD_entryRecord_t OD_record1601[3] = {
@@ -215,8 +210,16 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
            {(void*)&CO_OD_RAM.RPDOMappingParameter[2].numberOfMappedObjects, 0x0E, 0x1 },
 };
 
-/*0x1603*/ const CO_OD_entryRecord_t OD_record1603[1] = {
+/*0x1603*/ const CO_OD_entryRecord_t OD_record1603[9] = {
            {(void*)&CO_OD_RAM.RPDOMappingParameter[3].numberOfMappedObjects, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject1, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject2, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject3, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject4, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject5, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject6, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject7, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.RPDOMappingParameter[3].mappedObject8, 0x8E, 0x4 },
 };
 
 /*0x1800*/ const CO_OD_entryRecord_t OD_record1800[7] = {
@@ -271,24 +274,28 @@ struct sCO_OD_PERSIST_COMM CO_OD_PERSIST_COMM = {
            {(void*)&CO_OD_RAM.TPDOMappingParameter[0].mappedObject8, 0x8E, 0x4 },
 };
 
-/*0x1A01*/ const CO_OD_entryRecord_t OD_record1A01[3] = {
+/*0x1A01*/ const CO_OD_entryRecord_t OD_record1A01[4] = {
            {(void*)&CO_OD_RAM.TPDOMappingParameter[1].numberOfMappedObjects, 0x0E, 0x1 },
            {(void*)&CO_OD_RAM.TPDOMappingParameter[1].mappedObject1, 0x8E, 0x4 },
            {(void*)&CO_OD_RAM.TPDOMappingParameter[1].mappedObject2, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.TPDOMappingParameter[1].mappedObject3, 0x8E, 0x4 },
 };
 
-/*0x1A02*/ const CO_OD_entryRecord_t OD_record1A02[1] = {
+/*0x1A02*/ const CO_OD_entryRecord_t OD_record1A02[3] = {
            {(void*)&CO_OD_RAM.TPDOMappingParameter[2].numberOfMappedObjects, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.TPDOMappingParameter[2].mappedObject1, 0x8E, 0x4 },
+           {(void*)&CO_OD_RAM.TPDOMappingParameter[2].mappedObject2, 0x8E, 0x4 },
 };
 
-/*0x1A03*/ const CO_OD_entryRecord_t OD_record1A03[1] = {
+/*0x1A03*/ const CO_OD_entryRecord_t OD_record1A03[2] = {
            {(void*)&CO_OD_RAM.TPDOMappingParameter[3].numberOfMappedObjects, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.TPDOMappingParameter[3].mappedObject1, 0x8E, 0x4 },
 };
 
 /*0x600F*/ const CO_OD_entryRecord_t OD_record600F[3] = {
            {(void*)&CO_OD_RAM.EXTStopParameter.numberOfEntries, 0x06, 0x1 },
-           {(void*)&CO_OD_RAM.EXTStopParameter.externalStopEnable, 0x0E, 0x1 },
-           {(void*)&CO_OD_RAM.EXTStopParameter.externalStopConfig, 0x0E, 0x1 },
+           {(void*)&CO_OD_RAM.EXTStopParameter.externalStopEnable, 0x3E, 0x1 },
+           {(void*)&CO_OD_RAM.EXTStopParameter.externalStopConfig, 0x3E, 0x1 },
 };
 
 /*0x6011*/ const CO_OD_entryRecord_t OD_record6011[3] = {
@@ -377,33 +384,33 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x1401, 0x02, 0x00,  0, (void*)&OD_record1401},
 {0x1402, 0x02, 0x00,  0, (void*)&OD_record1402},
 {0x1403, 0x02, 0x00,  0, (void*)&OD_record1403},
-{0x1600, 0x08, 0x00,  0, (void*)&OD_record1600},
+{0x1600, 0x03, 0x00,  0, (void*)&OD_record1600},
 {0x1601, 0x02, 0x00,  0, (void*)&OD_record1601},
 {0x1602, 0x00, 0x00,  0, (void*)&OD_record1602},
-{0x1603, 0x00, 0x00,  0, (void*)&OD_record1603},
+{0x1603, 0x08, 0x00,  0, (void*)&OD_record1603},
 {0x1800, 0x06, 0x00,  0, (void*)&OD_record1800},
 {0x1801, 0x06, 0x00,  0, (void*)&OD_record1801},
 {0x1802, 0x06, 0x00,  0, (void*)&OD_record1802},
 {0x1803, 0x06, 0x00,  0, (void*)&OD_record1803},
 {0x1A00, 0x08, 0x00,  0, (void*)&OD_record1A00},
-{0x1A01, 0x02, 0x00,  0, (void*)&OD_record1A01},
-{0x1A02, 0x00, 0x00,  0, (void*)&OD_record1A02},
-{0x1A03, 0x00, 0x00,  0, (void*)&OD_record1A03},
+{0x1A01, 0x03, 0x00,  0, (void*)&OD_record1A01},
+{0x1A02, 0x02, 0x00,  0, (void*)&OD_record1A02},
+{0x1A03, 0x01, 0x00,  0, (void*)&OD_record1A03},
 {0x1F80, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.NMTStartup},
 {0x1F89, 0x00, 0x8E,  4, (void*)&CO_OD_RAM.bootTime},
-{0x2100, 0x00, 0x0E, 11, (void*)&CO_OD_RAM.errorStatusBits},
+{0x2000, 0x0A, 0x0E,  1, (void*)&CO_OD_RAM.errorStatusBits[0]},
 {0x6000, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.motorStatus},
 {0x6001, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.controlStatus},
 {0x6002, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.motorDirection},
 {0x6003, 0x00, 0xBE,  4, (void*)&CO_OD_RAM.maxSpeed},
 {0x6004, 0x00, 0xBE,  4, (void*)&CO_OD_RAM.stepRelativePosition},
-{0x6005, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.speedMode},
+{0x6005, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.workMode},
 {0x6006, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.startSpeed},
 {0x6007, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.endSpeed},
 {0x6008, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.accValue},
 {0x6009, 0x00, 0x0E,  1, (void*)&CO_OD_RAM.decValue},
 {0x600A, 0x00, 0xBE,  2, (void*)&CO_OD_RAM.microStep},
-{0x600B, 0x00, 0x8E,  2, (void*)&CO_OD_RAM.peakCurrent},
+{0x600B, 0x00, 0xBE,  2, (void*)&CO_OD_RAM.peakCurrent},
 {0x600C, 0x00, 0xBE,  4, (void*)&CO_OD_RAM.motorPosition},
 {0x600D, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.motorEnableRx},
 {0x600E, 0x00, 0x3E,  1, (void*)&CO_OD_RAM.motorEnableTx},
@@ -430,6 +437,6 @@ const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
 {0x602D, 0x04, 0x00,  0, (void*)&OD_record602D},
 {0x602E, 0x04, 0x00,  0, (void*)&OD_record602E},
 {0x602F, 0x06, 0x00,  0, (void*)&OD_record602F},
-{0x6030, 0x00, 0xB6,  4, (void*)&CO_OD_RAM.realTimeSpeed},
+{0x6030, 0x00, 0xBE,  4, (void*)&CO_OD_RAM.realTimeSpeed},
 };
 // clang-format on
