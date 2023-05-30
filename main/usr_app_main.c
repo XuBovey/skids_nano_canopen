@@ -36,7 +36,7 @@ void mainTask(void *pvParameter)
     coMainTaskArgs.name = "coMainTask";
     CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
 
-    vTaskDelay(BOOT_WAIT / portTICK_PERIOD_MS);
+    // vTaskDelay(BOOT_WAIT / portTICK_PERIOD_MS);
 
     while (reset != CO_RESET_APP)
     {
@@ -63,23 +63,25 @@ void mainTask(void *pvParameter)
         reset = CO_RESET_NOT;
         coInterruptCounterPrevious = coInterruptCounter;
 
-        // CO_sendNMTcommand(CO, CO_NMT_ENTER_PRE_OPERATIONAL, NODE_ID_PMC0);
+        CO_sendNMTcommand(CO, CO_NMT_ENTER_PRE_OPERATIONAL, NODE_ID_PMC0);
 		ESP_LOGI("mainTask", "set CO_NMT_ENTER_PRE_OPERATIONAL.");
-        CO_sendNMTcommand(CO, CO_NMT_ENTER_PRE_OPERATIONAL, 0x00);
-        // vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+        // CO_sendNMTcommand(CO, CO_NMT_ENTER_PRE_OPERATIONAL, 0x00);
+        vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
         ESP_LOGI("mainTask", "pmc_init."); 
         pmc_init(CO, NODE_ID_PMC0, 0);
 
         /*Set Operating Mode of Slaves to Operational*/
-        // vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+        vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
         ESP_LOGI("mainTask", "set motor enter operational.");
-        // CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, NODE_ID_PMC0);
-        CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, 0x00);
+        CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, NODE_ID_PMC0);
+        // CO_sendNMTcommand(CO, CO_NMT_ENTER_OPERATIONAL, 0x00);
         // ESP_LOGI("mainTask", "mode = %d.", CO->NMT->operatingState);
 
         /* Initialise system components */
 
         /* application init code goes here. */
+        vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+        vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
 		ESP_LOGI("mainTask", "loop.");
 	
 #define PDO_TEST 1
@@ -120,16 +122,16 @@ void mainTask(void *pvParameter)
                 pmc_setSpeed(setSpeed);
                 counter++;
             }
-            if (coInterruptCounter > 10 && counter == 1)
+            if (coInterruptCounter > 5 && counter == 1)
             {
-                setSpeed = 50000;
+                setSpeed = 0;
                 ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
                 pmc_setSpeed(setSpeed);
                 counter++;
             }
             if (coInterruptCounter > 20 && counter == 2)
             {
-                setSpeed = 80000;
+                setSpeed = 20000;
                 ESP_LOGI("mainTask", "pmc motor set setSpeed %d.", setSpeed);
                 pmc_setSpeed(setSpeed);
                 counter++;
@@ -153,21 +155,32 @@ void mainTask(void *pvParameter)
                 ESP_LOGI("mainTask", "pmc motor halt.");
                 pmc_quickStop();
                 counter++;
-                coInterruptCounter = 0;
             }
-            if (coInterruptCounter > 200 && counter == 6)
+            if (coInterruptCounter > 160 && counter == 6)
             {
-                ESP_LOGI("mainTask", "pmc motor halt.");
-                pmc_quickStop();
                 counter++;
-                coInterruptCounter = 0;
+                
             }
             // ESP_LOGI("mainTask", "pmc setSpeed = %d.", setSpeed);
 #endif
             if(counter == 7)
+            {
+                coInterruptCounter = 0;
                 counter = 0;
+            }
+                
             /* Wait */
             vTaskDelay(MAIN_WAIT / portTICK_PERIOD_MS);
+            ESP_LOGI("mainTask", "OD_realTimeSpeed=%d, motor status=0x%x, control status=0x%x, motor postion=%d.", 
+                    OD_realTimeSpeed,
+                    OD_motorStatus,
+                    OD_controlStatus,
+                    OD_motorPosition
+                    );
+            // if(OD_controlStatus&(~0x08))
+            // {
+            //     pmc_clearControlError();
+            // }
             coInterruptCounter += 1;
         }
             

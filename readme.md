@@ -54,9 +54,9 @@
 ## PDO传送方式
 PDO传输类型在通信参数子索引0x02上。主要有同步传输方式，与CAN总线的SYNC信号有关，接收到X个SYNC后发送；异步传输方式，由事件触发，包括数据改变触发，周期性定时器触发。
 * 当TPDO的传输类型为0时，如果数据发生改变，并且收到一个同步帧，则发送该TPDO；
-* 当TPDO的传输类型为1~240时，接收到相应个数的同步帧时，发送该TPDO;
+* 当TPDO的传输类型为1-240时，接收到相应个数的同步帧时，发送该TPDO;
 * 当TPDO的传输类型为254或255时，映射数据发生改变或事件计时器到达时发送该TPDO；
-* 当RPDO的传输类型为0~240时，只要收到一个同步帧则将该RPDO最新的数据更新到应用；
+* 当RPDO的传输类型为0-240时，只要收到一个同步帧则将该RPDO最新的数据更新到应用；
 * 当RPDO的传输类型为254或255时，将接收到的数据直接更新到应用。
 
 ## 如何控制一个电机
@@ -64,7 +64,47 @@ PDO传输类型在通信参数子索引0x02上。主要有同步传输方式，�
 
 ## 如何同时控制两个电机
 
+## CO_new返回错误
+PDO配置可能回导致CO_new函数返回错误，相关代码如下：
+```
+CO_ReturnError_t CO_new(void)
+{
+    int16_t i;
+#ifndef CO_USE_GLOBALS
+    uint16_t errCnt;
+#endif
+
+    /* Verify parameters from CO_OD */
+    if(   sizeof(OD_TPDOCommunicationParameter_t) != sizeof(CO_TPDOCommPar_t)
+       || sizeof(OD_TPDOMappingParameter_t) != sizeof(CO_TPDOMapPar_t)
+       || sizeof(OD_RPDOCommunicationParameter_t) != sizeof(CO_RPDOCommPar_t)
+       || sizeof(OD_RPDOMappingParameter_t) != sizeof(CO_RPDOMapPar_t))
+    {
+        return CO_ERROR_PARAMETERS;
+    }
+
+...
+}
+```
+这里因为OD_TPDOMappingParameter_t或OD_RPDOMappingParameter_t不是如下类型：
+```
+typedef struct {
+               UNSIGNED8      numberOfMappedObjects;
+               UNSIGNED32     mappedObject1;
+               UNSIGNED32     mappedObject2;
+               UNSIGNED32     mappedObject3;
+               UNSIGNED32     mappedObject4;
+               UNSIGNED32     mappedObject5;
+               UNSIGNED32     mappedObject6;
+               UNSIGNED32     mappedObject7;
+               UNSIGNED32     mappedObject8;
+               }              OD_TPDOMappingParameter_t;
+```
+配置PDO时肯能得到的mappedObject数量小于8，从而导致返回CO_ERROR_PARAMETERS错误。解决办法是在PDO中增加1个无效的选型，各字段配置为dummy。如下图：
+![](./pictures/01.png)
+
 ## 注意事项
-* 0x1400~0x1403 0x1600~x01603 0x1800~0x1803 0x1a00~0x1a03 这几个字典命名需字段内完全一致，否则会出错
-* 0x1400~0x1403 0x1600~x01603 0x1800~0x1803 0x1a00~0x1a03 字典内各字段需要与CO_PDO.h中定义的字段完全一致，因为CO_new函数中会做字段匹配
+* 0x1400-0x1403 0x1600-x01603 0x1800-0x1803 0x1a00-0x1a03 这几个字典命名需字段内完全一致，否则会出错
+* 0x1400-0x1403 0x1600-x01603 0x1800-0x1803 0x1a00-0x1a03 字典内各字段需要与CO_PDO.h中定义的字段完全一致，因为CO_new函数中会做字段匹配
 * 0x1600, 0x1a00字段不需要编辑，在做PDO Mapping的时候会自动填充
+* 编辑字典文件时，PDO中出现的各寄存器，RPDO映射的寄存器必须为SDO可访写的，否则会出现通信错误。

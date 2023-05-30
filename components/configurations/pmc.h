@@ -208,5 +208,6 @@ int8_t pmc_mapTPDO(uint8_t pdoNumber, uint8_t nodeId, uint32_t *mappedObjects, u
 
 // void pmc_move_steps(uint32_t steps);
 void pmc_sdoMotorTest(void);
+int8_t pmc_clearControlError(void);
 
 #endif /* PMC_H_ */

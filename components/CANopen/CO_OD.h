@@ -67,8 +67,8 @@
   #define CO_NO_SRDO                     0   //Associated objects: 1301-1341, 1381-13C0
   #define CO_NO_LSS_SERVER               0   //LSS Slave
   #define CO_NO_LSS_CLIENT               0   //LSS Master
-  #define CO_NO_RPDO                     4   //Associated objects: 14xx, 16xx
-  #define CO_NO_TPDO                     4   //Associated objects: 18xx, 1Axx
+  #define CO_NO_RPDO                     5   //Associated objects: 14xx, 16xx
+  #define CO_NO_TPDO                     5   //Associated objects: 18xx, 1Axx
   #define CO_NO_NMT_MASTER               1
   #define CO_NO_TRACE                    0
 
@@ -76,7 +76,7 @@
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-   #define CO_OD_NoOfElements             78
+   #define CO_OD_NoOfElements             82
 
 
 /*******************************************************************************
@@ -357,6 +357,13 @@
         #define OD_1403_1_RPDOCommunicationParameter_COB_IDUsedByRPDO 1
         #define OD_1403_2_RPDOCommunicationParameter_transmissionType 2
 
+/*1404 */
+        #define OD_1404_RPDOCommunicationParameter                  0x1404
+
+        #define OD_1404_0_RPDOCommunicationParameter_maxSubIndex    0
+        #define OD_1404_1_RPDOCommunicationParameter_COB_IDUsedByRPDO 1
+        #define OD_1404_2_RPDOCommunicationParameter_transmissionType 2
+
 /*1600 */
         #define OD_1600_RPDOMappingParameter                        0x1600
 
@@ -381,14 +388,19 @@
         #define OD_1603_RPDOMappingParameter                        0x1603
 
         #define OD_1603_0_RPDOMappingParameter_maxSubIndex          0
-        #define OD_1603_1_RPDOMappingParameter_mappedObject1        1
-        #define OD_1603_2_RPDOMappingParameter_mappedObject2        2
-        #define OD_1603_3_RPDOMappingParameter_mappedObject3        3
-        #define OD_1603_4_RPDOMappingParameter_mappedObject4        4
-        #define OD_1603_5_RPDOMappingParameter_mappedObject5        5
-        #define OD_1603_6_RPDOMappingParameter_mappedObject6        6
-        #define OD_1603_7_RPDOMappingParameter_mappedObject7        7
-        #define OD_1603_8_RPDOMappingParameter_mappedObject8        8
+
+/*1604 */
+        #define OD_1604_RPDOMappingParameter                        0x1604
+
+        #define OD_1604_0_RPDOMappingParameter_maxSubIndex          0
+        #define OD_1604_1_RPDOMappingParameter_mappedObject1        1
+        #define OD_1604_2_RPDOMappingParameter_mappedObject2        2
+        #define OD_1604_3_RPDOMappingParameter_mappedObject3        3
+        #define OD_1604_4_RPDOMappingParameter_mappedObject4        4
+        #define OD_1604_5_RPDOMappingParameter_mappedObject5        5
+        #define OD_1604_6_RPDOMappingParameter_mappedObject6        6
+        #define OD_1604_7_RPDOMappingParameter_mappedObject7        7
+        #define OD_1604_8_RPDOMappingParameter_mappedObject8        8
 
 /*1800 */
         #define OD_1800_TPDOCommunicationParameter                  0x1800
@@ -434,18 +446,21 @@
         #define OD_1803_5_TPDOCommunicationParameter_eventTimer     5
         #define OD_1803_6_TPDOCommunicationParameter_SYNCStartValue 6
 
+/*1804 */
+        #define OD_1804_TPDOCommunicationParameter                  0x1804
+
+        #define OD_1804_0_TPDOCommunicationParameter_maxSubIndex    0
+        #define OD_1804_1_TPDOCommunicationParameter_COB_IDUsedByTPDO 1
+        #define OD_1804_2_TPDOCommunicationParameter_transmissionType 2
+        #define OD_1804_3_TPDOCommunicationParameter_inhibitTime    3
+        #define OD_1804_4_TPDOCommunicationParameter_compatibilityEntry 4
+        #define OD_1804_5_TPDOCommunicationParameter_eventTimer     5
+        #define OD_1804_6_TPDOCommunicationParameter_SYNCStartValue 6
+
 /*1A00 */
         #define OD_1A00_TPDOMappingParameter                        0x1A00
 
         #define OD_1A00_0_TPDOMappingParameter_maxSubIndex          0
-        #define OD_1A00_1_TPDOMappingParameter_mappedObject1        1
-        #define OD_1A00_2_TPDOMappingParameter_mappedObject2        2
-        #define OD_1A00_3_TPDOMappingParameter_mappedObject3        3
-        #define OD_1A00_4_TPDOMappingParameter_mappedObject4        4
-        #define OD_1A00_5_TPDOMappingParameter_mappedObject5        5
-        #define OD_1A00_6_TPDOMappingParameter_mappedObject6        6
-        #define OD_1A00_7_TPDOMappingParameter_mappedObject7        7
-        #define OD_1A00_8_TPDOMappingParameter_mappedObject8        8
 
 /*1A01 */
         #define OD_1A01_TPDOMappingParameter                        0x1A01
@@ -467,6 +482,19 @@
 
         #define OD_1A03_0_TPDOMappingParameter_maxSubIndex          0
         #define OD_1A03_1_TPDOMappingParameter_mappedObject1        1
+
+/*1A04 */
+        #define OD_1A04_TPDOMappingParameter                        0x1A04
+
+        #define OD_1A04_0_TPDOMappingParameter_maxSubIndex          0
+        #define OD_1A04_1_TPDOMappingParameter_mappedObject1        1
+        #define OD_1A04_2_TPDOMappingParameter_mappedObject2        2
+        #define OD_1A04_3_TPDOMappingParameter_mappedObject3        3
+        #define OD_1A04_4_TPDOMappingParameter_mappedObject4        4
+        #define OD_1A04_5_TPDOMappingParameter_mappedObject5        5
+        #define OD_1A04_6_TPDOMappingParameter_mappedObject6        6
+        #define OD_1A04_7_TPDOMappingParameter_mappedObject7        7
+        #define OD_1A04_8_TPDOMappingParameter_mappedObject8        8
 
 /*1F80 */
         #define OD_1F80_NMTStartup                                  0x1F80
@@ -675,10 +703,10 @@ struct sCO_OD_RAM{
 /*1018      */ OD_identity_t   identity;
 /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
 /*1280      */ OD_SDOClientParameter_t SDOClientParameter[1];
-/*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[4];
-/*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[4];
-/*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[4];
-/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[4];
+/*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[5];
+/*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[5];
+/*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[5];
+/*1A00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[5];
 /*1F80      */ UNSIGNED32     NMTStartup;
 /*1F89      */ UNSIGNED32     bootTime;
 /*2000      */ UNSIGNED8       errorStatusBits[10];

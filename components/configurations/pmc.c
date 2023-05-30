@@ -70,29 +70,28 @@ int8_t pmc_init(CO_t *CO, uint8_t nodeId, uint8_t tpdoNum)
     _tpdoNum = tpdoNum;
 
     /*Configure Registor */
-    motor[0].errorStatus         = &OD_motorStatus;            // pmc reg: 0x6000
-    motor[0].driverStatus         = &OD_controlStatus;        // pmc reg: 0x6001
-    motor[0].operationMode         = &OD_workMode;                // pmc reg: 0x6005
-    motor[0].maxSpeed             = &OD_maxSpeed;                // pmc reg: 0x6003
-    motor[0].absolutePosition     = &OD_stepAbsolutePosition;    // pmc reg: 0x601c
-    // motor[0].enableWr            = &OD_motorEnableTx;        // pmc reg: 0X600e
-    // motor[0].enableRd            = &OD_motorEnableRx;        // pmc reg: 0X600e
-    motor[0].stop                = &OD_abortStep;            // pmc reg: 0x6020
-    // motor[0].currentSpeed        = &OD_realTimeSpeed;        // pmc reg: 0x6030
-    motor[0].currentPostion        = &OD_motorPosition;        // pmc reg: 0x600c
+    motor[0].errorStatus            = &OD_motorStatus;              // pmc reg: 0x6000
+    motor[0].driverStatus           = &OD_controlStatus;            // pmc reg: 0x6001
+    motor[0].operationMode          = &OD_workMode;                 // pmc reg: 0x6005
+    motor[0].maxSpeed               = &OD_maxSpeed;                 // pmc reg: 0x6003
+    motor[0].absolutePosition       = &OD_stepAbsolutePosition;     // pmc reg: 0x601c
+    // motor[0].enableWr            = &OD_motorEnableTx;            // pmc reg: 0X600e
+    // motor[0].enableRd            = &OD_motorEnableRx;            // pmc reg: 0X600e
+    motor[0].stop                   = &OD_abortStep;                // pmc reg: 0x6020
+    // motor[0].currentSpeed        = &OD_realTimeSpeed;            // pmc reg: 0x6030
+    motor[0].currentPostion         = &OD_motorPosition;            // pmc reg: 0x600c
 
-    uint32_t acceleration = 1000;
+    uint32_t acceleration = 500;
     // set operator mode
     // pmc_sdoSetOperatorMode(PMC_PROFILE_VELOCITY_MODE);
 
-    // CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x602d, 1, (uint8_t *)&acceleration, sizeof(acceleration), 0); // 加速度, pps/s
-    // CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x602d, 2, (uint8_t *)&acceleration, sizeof(acceleration), 0); // 减速度, pps/s
-    // OD_errorRegister = 0;
-    OD_stepAbsolutePosition = 100000;
-    OD_motorPosition = 40000;
+    CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x602d, 1, (uint8_t *)&acceleration, sizeof(acceleration), 0); // 加速度, pps/s
+    CO_SDOclientDownloadInitiate(CO->SDOclient[0], 0x602d, 2, (uint8_t *)&acceleration, sizeof(acceleration), 0); // 减速度, pps/s
+    // OD_stepAbsolutePosition = 100000;
+    // OD_motorPosition = 40000;
     OD_abortStep = 0;
     OD_workMode = 1;
-    OD_maxSpeed = 2000;
+    OD_maxSpeed = 0;
 
     subDiv = 32;
     pmc_sdoReadSubdivided(&subDiv);
@@ -124,6 +123,13 @@ int8_t pmc_clearError(void)
     CO->TPDO[_tpdoNum]->sendRequest = 1;
     *motor[motorNumber].maxSpeed = 0;
     CO->TPDO[_tpdoNum+1]->sendRequest = 1;
+    return 0;
+}
+
+int8_t pmc_clearControlError(void)
+{
+    *motor[motorNumber].driverStatus = 0xFF;     // clear all error status
+    CO->TPDO[_tpdoNum]->sendRequest = 1;
     return 0;
 }
 
